@@ -10,6 +10,7 @@ class UserServices{
     try{
       var url = Uri.parse(USERS_LIST);
       var response = await http.get(url);
+      // print("API response: ${response.body}");
       if(response.statusCode == 200){
         return Success(code: response.statusCode, response: userModelFromJson(response.body));
       }
@@ -18,6 +19,8 @@ class UserServices{
       return Failure(code: noInternet, errorResponse: "No Internet");
     } on FormatException{
       return Failure(code: invalidFormat, errorResponse: "Invalid Format");
+    }on SocketException{
+      return Failure(code: noInternet, errorResponse: "No Internet");
     }
   catch (e){
     return Failure(code: unknownError, errorResponse: "Unknown Error");
